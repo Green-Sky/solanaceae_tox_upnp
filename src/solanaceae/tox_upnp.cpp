@@ -18,10 +18,10 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 
 	// start upnp thread
 	_thread = std::thread([this](void) {
-		int seconds_since_last {60*10};
+		int seconds_since_last {60*60};
 		bool last_mapping_succ {false};
 		while (!_quit) {
-			if (seconds_since_last < 60*10) {
+			if (seconds_since_last < 60*60) {
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				seconds_since_last++;
 				continue;
@@ -69,7 +69,8 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 				"Tomato UPnP Tox UDP port forwarding",
 				"UDP",
 				nullptr,
-				"900" // lease duration in seconds
+				//"900" // lease duration in seconds
+				"0"
 			);
 
 			if (map_ret != UPNPCOMMAND_SUCCESS) {
