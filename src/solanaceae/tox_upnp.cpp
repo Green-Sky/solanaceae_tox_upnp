@@ -48,12 +48,16 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 			char lanaddr[64] = "unset";
 			auto res = UPNP_GetValidIGD(devices, &urls, &data, lanaddr, sizeof(lanaddr));
 
-			if (res != 1) {
+			if (res < 1) {
 				std::cerr << "TUPNP error: no valid connected IGD has been found\n";
+				if (res != 0) {
+					FreeUPNPUrls(&urls);
+					freeUPNPDevlist(devices);
+				}
 				continue;
 			}
 
-			std::cerr << "TUPNP: valid IGD found, local ip: " << lanaddr << "\n";
+			std::cerr << "TUPNP: valid IGD found (" << res << "), local ip: " << lanaddr << "\n";
 
 			const auto port_string = std::to_string(_local_port);
 			auto map_ret = UPNP_AddPortMapping(
@@ -70,6 +74,8 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 
 			if (map_ret != UPNPCOMMAND_SUCCESS) {
 				std::cerr << "TUPNP error: adding port mapping failed " << strupnperror(map_ret) << "\n";
+				FreeUPNPUrls(&urls);
+				freeUPNPDevlist(devices);
 				continue;
 			}
 
@@ -94,6 +100,9 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 
 				// potentially succ ???
 				last_mapping_succ = true;
+
+				FreeUPNPUrls(&urls);
+				freeUPNPDevlist(devices);
 				continue;
 			}
 
