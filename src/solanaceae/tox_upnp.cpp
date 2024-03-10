@@ -8,8 +8,13 @@
 
 #include <iostream>
 
-ToxUPnP::ToxUPnP(void) {
+ToxUPnP::ToxUPnP(ToxI& tox) {
 	// get tox port
+	auto [port_opt, _] = tox.toxSelfGetUDPPort();
+	if (!port_opt.has_value()) {
+		return; // oof
+	}
+	_local_port = port_opt.value();
 
 	// start upnp thread
 	_thread = std::thread([this](void) {

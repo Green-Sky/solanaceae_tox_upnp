@@ -29,10 +29,11 @@ SOLANA_PLUGIN_EXPORT uint32_t solana_plugin_start(struct SolanaAPI* solana_api) 
 
 	try {
 		// TODO: toxI
+		auto* tox_i = PLUG_RESOLVE_INSTANCE(ToxI);
 
 		// static store, could be anywhere tho
 		// construct with fetched dependencies
-		g_tox_upnp = std::make_unique<ToxUPnP>();
+		g_tox_upnp = std::make_unique<ToxUPnP>(*tox_i);
 
 		// register types
 		PLUG_PROVIDE_INSTANCE(ToxUPnP, plugin_name, g_tox_upnp.get());
