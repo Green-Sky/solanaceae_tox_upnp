@@ -26,6 +26,7 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 		UPNPUrls urls { nullptr, nullptr, nullptr, nullptr, nullptr, };
 		IGDdatas data;
 		char lanaddr[64] = "unset";
+		char wanaddr[64] = "unset";
 
 		while (!_quit) {
 			if (seconds_since_last < 60*60) {
@@ -49,7 +50,13 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 				std::cerr << "  " << d->descURL << " " << d->st << " " << d->usn << "\n";
 			}
 
-			auto res = UPNP_GetValidIGD(devices.get(), &urls, &data, lanaddr, sizeof(lanaddr));
+			auto res = UPNP_GetValidIGD(
+				devices.get(),
+				&urls,
+				&data,
+				lanaddr, sizeof(lanaddr),
+				wanaddr, sizeof(wanaddr)
+			);
 
 			if (res < 1) {
 				std::cerr << "TUPNP error: no valid connected IGD has been found\n";
@@ -60,7 +67,7 @@ ToxUPnP::ToxUPnP(ToxI& tox) {
 				continue;
 			}
 
-			std::cerr << "TUPNP: valid IGD found (" << res << "), local ip: " << lanaddr << "\n";
+			std::cerr << "TUPNP: valid IGD found (" << res << "), lan ip: " << lanaddr << ", wan ip: " << wanaddr << "\n";
 			break;
 		}
 
