@@ -28,7 +28,6 @@ SOLANA_PLUGIN_EXPORT uint32_t solana_plugin_start(struct SolanaAPI* solana_api) 
 	}
 
 	try {
-		// TODO: toxI
 		auto* tox_i = PLUG_RESOLVE_INSTANCE(ToxI);
 
 		// static store, could be anywhere tho

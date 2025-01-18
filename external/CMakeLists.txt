@@ -18,7 +18,7 @@ if (NOT TARGET miniupnpc::miniupnpc)
 	set(UPNPC_NO_INSTALL ON CACHE BOOL "" FORCE)
 	FetchContent_Declare(miniupnpc
 		GIT_REPOSITORY https://github.com/miniupnp/miniupnp.git
-		GIT_TAG miniupnpc_2_2_8 # meh
+		GIT_TAG miniupnpc_2_3_0
 		SOURCE_SUBDIR miniupnpc
 	)
 	FetchContent_MakeAvailable(miniupnpc)
